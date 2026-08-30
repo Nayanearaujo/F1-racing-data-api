@@ -1,0 +1,37 @@
+{
+  "name": "f1-racing-data-api",
+  "version": "1.0.0",
+  "description": "API REST de dados de Fórmula 1 alinhada com Engenharia de Dados e Inteligência Artificial",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "etl:ingest": "python3 scripts/etl_ingestion.py",
+    "etl:transform": "python3 scripts/etl_transform_load.py",
+    "data:validate": "python3 scripts/validate_data.py"
+  },
+  "keywords": [
+    "f1",
+    "formula1",
+    "fastify",
+    "typescript",
+    "data-engineering",
+    "sqlite",
+    "ergast-api"
+  ],
+  "author": "Nayane - Engenharia de Dados & IA",
+  "license": "MIT",
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "better-sqlite3": "^9.4.3",
+    "fastify": "^4.26.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.9",
+    "@types/node": "^20.11.24",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
+  }
+}

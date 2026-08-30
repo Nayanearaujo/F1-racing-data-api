@@ -1,0 +1,69 @@
+{
+  "MRData": {
+    "StandingsTable": {
+      "StandingsLists": [
+        {
+          "season": "2023",
+          "round": "22",
+          "ConstructorStandings": [
+            {
+              "position": "1",
+              "points": "860",
+              "wins": "21",
+              "Constructor": {
+                "constructorId": "red_bull",
+                "name": "Red Bull Racing",
+                "nationality": "Austrian",
+                "url": "https://en.wikipedia.org/wiki/Red_Bull_Racing"
+              }
+            },
+            {
+              "position": "2",
+              "points": "409",
+              "wins": "0",
+              "Constructor": {
+                "constructorId": "mercedes",
+                "name": "Mercedes",
+                "nationality": "German",
+                "url": "https://en.wikipedia.org/wiki/Mercedes-Benz_in_Formula_One"
+              }
+            },
+            {
+              "position": "3",
+              "points": "406",
+              "wins": "1",
+              "Constructor": {
+                "constructorId": "ferrari",
+                "name": "Ferrari",
+                "nationality": "Italian",
+                "url": "https://en.wikipedia.org/wiki/Scuderia_Ferrari"
+              }
+            },
+            {
+              "position": "4",
+              "points": "302",
+              "wins": "0",
+              "Constructor": {
+                "constructorId": "mclaren",
+                "name": "McLaren",
+                "nationality": "British",
+                "url": "https://en.wikipedia.org/wiki/McLaren"
+              }
+            },
+            {
+              "position": "5",
+              "points": "280",
+              "wins": "0",
+              "Constructor": {
+                "constructorId": "aston_martin",
+                "name": "Aston Martin",
+                "nationality": "British",
+                "url": "https://en.wikipedia.org/wiki/Aston_Martin_in_Formula_One"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
