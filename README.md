@@ -1,6 +1,10 @@
+<div align="center">
+
+![F1 Data Engineering Banner](./docs/assets/banner.jpg)
+
 # 🏎️ F1 Racing Data API
 
-> **API REST de Engenharia de Dados e Análise de Performance da Fórmula 1**, alinhada com as disciplinas e competências da **Pós-Graduação em Engenharia de Dados e Inteligência Artificial**.
+**API REST de Engenharia de Dados e Análise de Performance da Fórmula 1**, desenvolvida com **IA Generativa** para o **Bootcamp Sem Parar Corpay (DIO)** & alinhada com a **Pós-Graduação em Engenharia de Dados e Inteligência Artificial**.
 
 [![Node.js](https://img.shields.io/badge/Node.js-20.x-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
@@ -9,17 +13,36 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
 [![Python](https://img.shields.io/badge/Python-ETL_Pipeline-3776AB.svg)](https://www.python.org/)
 
+</div>
+
 ---
 
 ## 🎯 Objetivo do Projeto
 
-Construir um pipeline fim a fim de **Engenharia de Dados**, cobrindo desde a **ingestão e limpeza de dados brutos** de corridas reais da Fórmula 1 (Ergast F1 API), passando por **modelagem dimensional relacional (Esquema Estrela / Star Schema)** com cálculo de métricas derivadas, até a disponibilização em uma **API REST de alta performance** construída com **Fastify + TypeScript** e conteinerizada com **Docker**.
+Construir um pipeline fim a fim de **Engenharia de Dados & Back-End**, cobrindo desde a **ingestão e limpeza de dados brutos** de corridas reais da Fórmula 1 (Ergast F1 API), passando por **modelagem dimensional relacional (Esquema Estrela / Star Schema)** com cálculo de métricas derivadas em SQLite, até a disponibilização em uma **API REST de alta performance** construída com **Fastify + TypeScript** e conteinerizada com **Docker**.
 
 ---
 
-## 🎓 Alinhamento com a Ementa da Pós-Graduação
+## 🏗️ Arquitetura do Pipeline de Dados
 
-| Disciplina da Pós | Aplicação Prática no Projeto |
+<div align="center">
+
+![Pipeline de Engenharia de Dados](./docs/assets/architecture.jpg)
+
+</div>
+
+### Fluxo em Camadas (Medallion Architecture):
+1. **Camada Bronze (Raw Ingestion):** Ingestão de temporadas, corridas, pilotos, equipes e resultados em arquivos JSON brutos em `data/raw/`.
+2. **Camada Silver (Processing & Transformation):** Scripts de ETL em Python (`etl_transform_load.py`) para validação de esquemas, deduping, tratamento de nulos e cálculo de métricas avançadas (diferença de grid, taxa de vitórias, pódios e pontos acumulados).
+3. **Camada Gold (Business Readiness):** Banco de dados relacional SQLite (`f1_database.sqlite`) modelado no padrão **Star Schema** com tabelas Dimensão (`dim_piloto`, `dim_time`, `dim_corrida`, `dim_tempo`) e Tabelas Fato (`fato_resultados`, `fato_ranking_*`).
+4. **Camada de Serviço (API Serving):** API REST desenvolvida em **Fastify + TypeScript** conectada via driver de alta performance (`better-sqlite3`), fornecendo respostas JSON estruturadas com sub-milissegundo de latência.
+5. **Quality Gate & Governança:** Script automatizado (`validate_data.py`) garantindo **100% de integridade referencial** e conformidade com a LGPD (Lei nº 13.709/2018).
+
+---
+
+## 🎓 Alinhamento com a Ementa da Pós & Bootcamp Sem Parar Corpay
+
+| Disciplina / Competência | Aplicação Prática no Projeto |
 | :--- | :--- |
 | **01. Fundamentos de Engenharia de Dados** | Organização em camadas de dados (Raw/Bronze, Processed/Gold), governança de pastas e arquivos. |
 | **02. Engenharia de Dados na Prática (Python/SQL)** | Pipelines de ETL automatizados em Python (`etl_ingestion.py`, `etl_transform_load.py`) e reconciliação SQL. |
@@ -32,37 +55,21 @@ Construir um pipeline fim a fim de **Engenharia de Dados**, cobrindo desde a **i
 
 ---
 
-## 🏗️ Arquitetura do Pipeline
-
-```mermaid
-flowchart TD
-    API["🏎️ Ergast F1 API / Jolpica Mirror"] -->|1. Ingestão REST| RAW["📁 data/raw/*.json (Bronze)"]
-    RAW -->|2. Limpeza, Tipagem & Métricas| ETL["⚙️ Python ETL Pipeline"]
-    ETL -->|3. Carga Dimensional| DB[("🗄️ SQLite Database (Gold)\n(Fatos & Dimensões)")]
-    
-    DB -->|4. Validação & Quality Gate| AUDIT["🔍 scripts/validate_data.py"]
-    DB -->|5. better-sqlite3| FASTIFY["⚡ Fastify + TypeScript Server"]
-    
-    FASTIFY --> R1["GET /temporadas"]
-    FASTIFY --> R2["GET /corridas"]
-    FASTIFY --> R3["GET /pilotos"]
-    FASTIFY --> R4["GET /pilotos/:id"]
-    FASTIFY --> R5["GET /times"]
-    FASTIFY --> R6["GET /resultados"]
-    FASTIFY --> R7["GET /ranking"]
-    
-    FASTIFY --> CONSUMERS["📊 Power BI | Dashboards | Modelos de ML"]
-```
-
----
-
-## 🗂️ Estrutura de Pastas
+## 🗂️ Estrutura do Repositório
 
 ```
 f1-racing-data-api/
 ├── data/
 │   ├── raw/                        # Dados brutos extraídos em JSON (Camada Bronze)
 │   └── processed/                  # Banco f1_database.sqlite modelado (Camada Gold)
+├── docs/
+│   ├── assets/                     # Imagens e banners do projeto
+│   │   ├── banner.jpg
+│   │   └── architecture.jpg
+│   ├── arquitetura.md              # Detalhamento da arquitetura técnica
+│   ├── dicionario_dados.md         # Dicionário de dados completo
+│   ├── governanca_lgpd.md          # Política de LGPD e governança
+│   └── auditoria_metricas.sql      # Queries SQL de validação
 ├── scripts/
 │   ├── etl_ingestion.py            # Ingestão de dados da Ergast F1 API
 │   ├── etl_transform_load.py       # Transformação, métricas e carga no SQLite
@@ -79,11 +86,6 @@ f1-racing-data-api/
 │   │   └── ranking.ts              # Classificação de pilotos e construtores
 │   └── types/
 │       └── f1.ts                   # Interfaces TypeScript completas
-├── docs/
-│   ├── arquitetura.md              # Diagrama e fluxo de arquitetura
-│   ├── dicionario_dados.md         # Dicionário de dados completo
-│   ├── governanca_lgpd.md          # Política de LGPD e governança
-│   └── auditoria_metricas.sql      # Queries SQL de validação
 ├── Dockerfile                      # Build multi-stage para produção
 ├── docker-compose.yml              # Orquestração do container
 ├── package.json                    # Dependências Fastify e TypeScript
@@ -119,7 +121,7 @@ curl http://localhost:3000/
 # Executa a limpeza, cálculo de métricas e criação do banco SQLite
 python3 scripts/etl_transform_load.py
 
-# Valida a integridade dos dados e métricas
+# Valida a integridade dos dados e métricas (Quality Gate)
 python3 scripts/validate_data.py
 ```
 
@@ -219,4 +221,4 @@ Resultados garantidos pelo pipeline:
 
 ## 👩‍💻 Autoria
 
-Desenvolvido por **Nayane** como projeto prático integrador para a **Pós-Graduação em Engenharia de Dados e Inteligência Artificial**.
+Desenvolvido por **Nayane** como projeto prático integrador para o **Bootcamp Sem Parar Corpay (DIO)** e a **Pós-Graduação em Engenharia de Dados e Inteligência Artificial**.
